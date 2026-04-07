@@ -1,5 +1,5 @@
 {
-  "extends": "@starter/typescript-config/nextjs",
+  "extends": "@nilam/typescript-config/nextjs",
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"]

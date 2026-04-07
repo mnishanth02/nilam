@@ -1,16 +1,11 @@
-@import "tailwindcss";
+@import "@nilam/ui/globals.css";
+@source "../../../../packages/ui/src";
 
-@theme inline {
-  --color-background: #ffffff;
-  --color-foreground: #171717;
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Wire loaded font CSS variables from layout.tsx to the theme */
+:root {
+  --font-sans: var(--font-inter, 'Inter', system-ui, sans-serif);
+  --font-heading: var(--font-dm-sans, 'DM Sans', sans-serif);
+  --font-mono: var(--font-jetbrains-mono, 'JetBrains Mono', monospace);
 }
 
-@layer base {
-  body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-    font-family: var(--font-sans), Arial, Helvetica, sans-serif;
-  }
-}
+/* Web-specific overrides (if any) go below */

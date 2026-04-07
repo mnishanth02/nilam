@@ -47,8 +47,6 @@ jobs:
       - name: Build
         run: pnpm build
 
-      # Playwright E2E requires secrets (DATABASE_URL, CLERK_SECRET_KEY, etc.)
-      # Configure these in your repo's GitHub Actions secrets to enable E2E in CI.
       - name: Install Playwright browsers
         if: ${{ secrets.DATABASE_URL != '' }}
         run: cd apps/web && pnpm exec playwright install --with-deps chromium
@@ -57,13 +55,11 @@ jobs:
 
       - name: Playwright E2E tests
         if: ${{ secrets.DATABASE_URL != '' }}
-        run: cd apps/web && pnpm exec playwright test
+        run: cd apps/web && pnpm test:e2e
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
-          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
-          NEXT_PUBLIC_APP_URL: http://localhost:3000
-          CORS_ALLOWED_ORIGINS: http://localhost:3000
+          NEXT_PUBLIC_API_URL: http://localhost:4000
+          CORS_ORIGIN: http://localhost:3000
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4

@@ -1,0 +1,36 @@
+{
+  "name": "@nilam/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/app.ts",
+      "default": "./src/app.ts"
+    }
+  },
+  "scripts": {
+    "start": "bun run src/app.ts",
+    "dev": "bun --watch src/app.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "pnpm exec biome check .",
+    "test": "vitest run --config ./vitest.config.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.913.0",
+    "@aws-sdk/s3-request-presigner": "^3.913.0",
+    "@nilam/auth": "workspace:*",
+    "@nilam/db": "workspace:*",
+    "@nilam/shared": "workspace:*",
+    "@nilam/validators": "workspace:*",
+    "@sentry/node": "^10.22.0",
+    "hono": "^4.12.9",
+    "inngest": "^3.27.0",
+    "resend": "^4.0.0"
+  },
+  "devDependencies": {
+    "@nilam/typescript-config": "workspace:*",
+    "@types/node": "^25.5.0",
+    "typescript": "^6.0.2"
+  }
+}

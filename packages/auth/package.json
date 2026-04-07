@@ -1,5 +1,5 @@
 {
-  "name": "@starter/auth",
+  "name": "@nilam/auth",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -18,11 +18,12 @@
     "lint": "pnpm exec biome check ."
   },
   "dependencies": {
-    "@clerk/backend": "^3.2.3",
-    "@starter/validation": "workspace:*"
+    "@nilam/db": "workspace:*",
+    "@nilam/validators": "workspace:*",
+    "better-auth": "^1.2.9"
   },
   "devDependencies": {
-    "@starter/typescript-config": "workspace:*",
+    "@nilam/typescript-config": "workspace:*",
     "@types/node": "^25.5.0",
     "typescript": "^6.0.2"
   }

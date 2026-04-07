@@ -1,5 +1,5 @@
 {
-  "extends": "@starter/typescript-config/base",
+  "extends": "@nilam/typescript-config/base",
   "compilerOptions": {
     "types": ["node"]
   },

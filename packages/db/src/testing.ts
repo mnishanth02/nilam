@@ -4,7 +4,7 @@ import { loadDbEnv } from './load-env';
 
 loadDbEnv();
 
-export const TEST_TABLES = ['projects', 'uploads'] as const;
+export const TEST_TABLES = [] as const;
 export type TestDatabaseTransaction = Parameters<Parameters<typeof db.transaction>[0]>[0];
 
 export const dbTestIsolationStrategy = {
@@ -42,6 +42,10 @@ export async function withTestTransaction<T>(
 export async function truncateTestTables(): Promise<void> {
   if (!isTestEnvironment()) {
     throw new Error('truncateTestTables can only run in a test environment');
+  }
+
+  if (TEST_TABLES.length === 0) {
+    return;
   }
 
   const tableList = TEST_TABLES.map((tableName) => `"${tableName}"`).join(', ');

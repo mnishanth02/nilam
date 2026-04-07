@@ -1,0 +1,4 @@
+{
+  "extends": "@nilam/typescript-config/base",
+  "include": ["src"]
+}

@@ -51,6 +51,6 @@ describe('db test isolation strategy', () => {
         fallback: 'truncate',
       }),
     );
-    expect(TEST_TABLES).toEqual(['projects', 'uploads']);
+    expect(TEST_TABLES).toEqual([]);
   });
 });

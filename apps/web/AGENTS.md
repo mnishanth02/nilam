@@ -1,5 +1,7 @@
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
+# Nilam Web Agent Notes
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
-<!-- END:nextjs-agent-rules -->
+- Next.js 16 App Router: verify behavior against local Next docs before changing framework code.
+- Use Better Auth flows.
+- Call the standalone API with `NEXT_PUBLIC_API_URL`.
+- Prefer shared tokens and components from `@nilam/ui`.
+- `(auth)` contains public auth screens; `(app)` contains the authenticated shell.

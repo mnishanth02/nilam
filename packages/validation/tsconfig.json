@@ -1,4 +1,0 @@
-{
-  "extends": "@starter/typescript-config/base",
-  "include": ["src"]
-}

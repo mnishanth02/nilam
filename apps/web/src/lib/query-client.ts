@@ -1,4 +1,4 @@
-import { QUERY_DEFAULTS } from '@starter/validation';
+import { QUERY_DEFAULTS } from '@nilam/validators';
 import { isServer, QueryClient } from '@tanstack/react-query';
 
 function makeQueryClient() {

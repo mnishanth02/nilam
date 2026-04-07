@@ -1,8 +1,0 @@
-{
-  "crons": [
-    {
-      "path": "/api/cleanup/uploads/stale",
-      "schedule": "0 2 * * *"
-    }
-  ]
-}

@@ -1,7 +1,0 @@
-{
-  "extends": "@starter/typescript-config/base",
-  "compilerOptions": {
-    "types": ["node"]
-  },
-  "include": ["src"]
-}

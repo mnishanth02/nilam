@@ -1,5 +1,5 @@
+const DEFAULT_API_BASE_URL = 'http://localhost:4000';
+
 export function getApiBaseUrl() {
-  return typeof window === 'undefined'
-    ? (process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000')
-    : '';
+  return (process.env.NEXT_PUBLIC_API_URL ?? DEFAULT_API_BASE_URL).replace(/\/$/, '');
 }

@@ -1,24 +1,24 @@
-/**
- * @starter/auth/client — Client-safe type re-exports
- *
- * Only types and constants — NO server imports.
- * Safe to import in both web (Next.js) and mobile (Expo) bundles.
- *
- * NOTE: Do NOT re-export Clerk hooks here. Web uses @clerk/nextjs,
- * mobile uses @clerk/clerk-expo — they are different packages.
- */
+import { createAuthClient } from 'better-auth/client';
+import { organizationClient } from 'better-auth/client/plugins';
 
-/** Minimal authenticated user shape shared across web and mobile. */
-export interface AuthUser {
+export function createClient(baseURL: string) {
+  return createAuthClient({
+    baseURL,
+    plugins: [organizationClient()],
+  });
+}
+
+export type AuthClient = ReturnType<typeof createClient>;
+
+export type AuthUser = {
   id: string;
-  email: string | null;
-  firstName: string | null;
-  lastName: string | null;
-  imageUrl: string | null;
-}
+  email: string;
+  name: string;
+  image?: string | null;
+};
 
-/** Session payload returned by auth middleware. */
-export interface AuthSession {
+export type AuthSession = {
+  id: string;
   userId: string;
-  sessionId: string;
-}
+  expiresAt: Date;
+};

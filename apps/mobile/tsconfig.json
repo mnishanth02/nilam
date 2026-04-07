@@ -1,9 +1,0 @@
-{
-  "extends": "@starter/typescript-config/react-native",
-  "compilerOptions": {
-    "paths": {
-      "@/*": ["./*"]
-    }
-  },
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
-}

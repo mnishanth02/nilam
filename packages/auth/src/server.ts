@@ -1,34 +1,108 @@
-/**
- * @starter/auth/server — SERVER-ONLY utilities
- *
- * Provides Clerk backend helpers reusable outside of Hono context
- * (seed scripts, webhooks, cron jobs, etc.).
- *
- * For Hono-specific auth middleware, see packages/api/src/middleware/auth.ts
- */
+import * as dbExports from '@nilam/db';
+import { db } from '@nilam/db';
+import { betterAuth } from 'better-auth';
+import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { organization } from 'better-auth/plugins';
+import { createAccessControl } from 'better-auth/plugins/access';
 
-import { verifyToken as clerkVerifyToken, createClerkClient } from '@clerk/backend';
+const { db: _db, testConnection: _testConnection, ...schema } = dbExports;
 
-const secretKey = process.env.CLERK_SECRET_KEY;
-if (!secretKey) {
-  throw new Error('CLERK_SECRET_KEY environment variable is required');
+const ac = createAccessControl({
+  account: ['create', 'read', 'update', 'delete'],
+} as const);
+
+const adminRole = ac.newRole({
+  account: ['create', 'read', 'update', 'delete'],
+});
+
+const viewerRole = ac.newRole({
+  account: ['read'],
+});
+
+export { ac, adminRole, viewerRole };
+
+export interface EmailCallbacks {
+  sendResetPassword: (params: {
+    user: { email: string; name: string };
+    url: string;
+  }) => Promise<void>;
+  sendInvitationEmail: (params: {
+    email: string;
+    inviter: { user: { name: string; email: string } };
+    organization: { name: string };
+    id: string;
+    role: string;
+  }) => Promise<void>;
 }
 
-const clerkClient = createClerkClient({ secretKey });
+let emailCallbacks: EmailCallbacks = {
+  sendResetPassword: async () => {
+    console.warn('sendResetPassword not configured');
+  },
+  sendInvitationEmail: async () => {
+    console.warn('sendInvitationEmail not configured');
+  },
+};
 
-export { clerkClient };
-
-/** Verify a Clerk session token (useful for non-Hono contexts). */
-export async function verifyToken(token: string) {
-  return clerkVerifyToken(token, { secretKey });
+export function setEmailCallbacks(callbacks: Partial<EmailCallbacks>) {
+  emailCallbacks = { ...emailCallbacks, ...callbacks };
 }
 
-/** Fetch a Clerk user by their Clerk user ID. */
-export async function getUser(userId: string) {
-  return clerkClient.users.getUser(userId);
+function getTrustedOrigins() {
+  const values = [process.env.CORS_ORIGIN]
+    .filter((value): value is string => Boolean(value))
+    .flatMap((value) => value.split(','))
+    .map((value) => value.trim())
+    .filter(Boolean);
+
+  return Array.from(new Set(values.length > 0 ? values : ['http://localhost:3000']));
 }
 
-/** Check whether the authenticated user owns the resource. */
-export function isResourceOwner(authUserId: string, resourceUserId: string): boolean {
-  return authUserId === resourceUserId;
+if (!process.env.BETTER_AUTH_SECRET) {
+  throw new Error('BETTER_AUTH_SECRET environment variable is required');
 }
+
+export const auth = betterAuth({
+  baseURL: process.env.BETTER_AUTH_URL,
+  secret: process.env.BETTER_AUTH_SECRET,
+  database: drizzleAdapter(db, {
+    provider: 'pg',
+    schema,
+  }),
+  emailAndPassword: {
+    enabled: true,
+    async sendResetPassword({ user, url }) {
+      await emailCallbacks.sendResetPassword({
+        user: {
+          email: user.email,
+          name: user.name ?? user.email,
+        },
+        url,
+      });
+    },
+  },
+  trustedOrigins: getTrustedOrigins(),
+  advanced: {
+    crossSubDomainCookies: {
+      enabled: false,
+    },
+    defaultCookieAttributes: {
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    },
+  },
+  plugins: [
+    organization({
+      ac,
+      roles: {
+        admin: adminRole,
+        viewer: viewerRole,
+      },
+      async sendInvitationEmail(data) {
+        await emailCallbacks.sendInvitationEmail(data);
+      },
+    }),
+  ],
+});
+
+export type Auth = typeof auth;

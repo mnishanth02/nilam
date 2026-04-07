@@ -1,0 +1,184 @@
+@import "tailwindcss";
+
+@theme {
+  /* === Backgrounds & Surfaces === */
+  --color-background: #FFFAF5;
+  --color-surface: #FFF3E8;
+  --color-surface-hover: #FFEBD8;
+  --color-surface-active: #FFE0C8;
+
+  --color-foreground: #3D2C2E;
+
+  /* === Borders === */
+  --color-border: #E8D5C4;
+  --color-border-strong: #D4B8A0;
+
+  /* === Primary (Terracotta) === */
+  --color-primary: #C2705B;
+  --color-primary-hover: #A85A47;
+  --color-primary-active: #934E3D;
+  --color-primary-foreground: #FFFFFF;
+  --color-primary-muted: #F0D5CB;
+
+  /* === Secondary === */
+  --color-secondary: #8B6F5E;
+  --color-secondary-hover: #755C4D;
+  --color-secondary-foreground: #FFFFFF;
+
+  /* === Text === */
+  --color-text: #3D2C2E;
+  --color-text-muted: #7A6B63;
+  --color-text-faint: #A89A91;
+
+  /* === Semantic Status === */
+  --color-success: #3D6E38;
+  --color-success-foreground: #FFFFFF;
+  --color-success-muted: #E8F0E6;
+
+  --color-warning: #846810;
+  --color-warning-foreground: #FFFFFF;
+  --color-warning-muted: #FBF3DB;
+
+  --color-info: #336D90;
+  --color-info-foreground: #FFFFFF;
+  --color-info-muted: #E7F1F8;
+
+  --color-destructive: #B54040;
+  --color-destructive-hover: #9A3535;
+  --color-destructive-foreground: #FFFFFF;
+  --color-destructive-muted: #FCEAEA;
+
+  /* === Accent === */
+  --color-accent: #E8A87C;
+  --color-accent-foreground: #3D2C2E;
+  --color-accent-muted: #FDF0E6;
+
+  /* === Muted === */
+  --color-muted: #F5EDE5;
+  --color-muted-foreground: #7A6B63;
+
+  /* === Input/Ring === */
+  --color-input: #E8D5C4;
+  --color-ring: #C2705B;
+
+  /* === Sidebar === */
+  --color-sidebar: #FAF0E6;
+  --color-sidebar-foreground: #3D2C2E;
+  --color-sidebar-border: #E8D5C4;
+  --color-sidebar-accent: #C2705B;
+  --color-sidebar-accent-foreground: #C2705B;
+  --color-sidebar-muted: #7A6B63;
+
+  /* === Chart === */
+  --color-chart-1: #C2705B;
+  --color-chart-2: #7BA075;
+  --color-chart-3: #E8A87C;
+  --color-chart-4: #8B6F5E;
+  --color-chart-5: #D4A017;
+  --color-chart-6: #6B9BC3;
+
+  /* === Typography === */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'DM Sans', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* === Radii === */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+}
+
+:root {
+  /* === shadcn base tokens === */
+  --background: var(--color-background);
+  --foreground: var(--color-foreground);
+
+  --card: var(--color-surface);
+  --card-foreground: var(--color-text);
+
+  --popover: var(--color-surface);
+  --popover-foreground: var(--color-text);
+
+  --primary: var(--color-primary);
+  --primary-foreground: var(--color-primary-foreground);
+
+  --secondary: var(--color-muted);
+  --secondary-foreground: var(--color-text);
+
+  --muted: var(--color-muted);
+  --muted-foreground: var(--color-muted-foreground);
+
+  --accent: var(--color-surface-hover);
+  --accent-foreground: var(--color-text);
+
+  --destructive: var(--color-destructive);
+  --destructive-foreground: var(--color-destructive-foreground);
+
+  --border: var(--color-border);
+  --input: var(--color-input);
+  --ring: var(--color-ring);
+
+  /* === Radius (shadcn default) === */
+  --radius: 0.5rem;
+
+  /* === Motion === */
+  --duration-fast: 100ms;
+  --duration-base: 150ms;
+  --duration-slow: 200ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+
+  /* Focus ring visibility */
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  /* Skip link */
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    z-index: 100;
+    padding: 8px 16px;
+    background: var(--color-primary);
+    color: var(--color-primary-foreground);
+    transition: top var(--duration-fast) var(--ease-standard);
+  }
+
+  .skip-link:focus {
+    top: 0;
+  }
+
+  /* Touch target minimums */
+  @media (pointer: coarse) {
+    button,
+    [role='button'],
+    a,
+    input[type='checkbox'],
+    input[type='radio'] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+}
